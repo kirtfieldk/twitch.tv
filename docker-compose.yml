@@ -1,0 +1,31 @@
+version: '3.1'
+services:
+  client:
+    image: TWITCH.TV-client
+    restart: always
+    build: .
+    working_dir: /client/src/app
+    volumes:
+      - "./client:/client/src/app"
+    entrypoint: ["npm", "start"]
+    links:
+      - api
+    ports: 
+      - "3000:3000"
+    networks:
+      - webappnetwork
+  
+  api:
+    build: .
+    volumes:
+      - "./api/:api"
+      - "/api/node_modules"
+    ports: 
+      - "3001:3001"
+    networks:
+      - webappnetwork
+
+networks:
+  webappnetwork:
+    driver: bridge
+    
